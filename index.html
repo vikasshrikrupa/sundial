@@ -1,0 +1,922 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>MCQ Test (Offline)</title>
+<style>
+  :root{
+    /* Core academic palette */
+    --accent:#2563eb;          /* Calm academic blue */
+    --accent-soft:#e8f0ff;     /* Soft blue highlight */
+    --bg:#90E8E8;              /* Neutral page background */
+    --card:#ffffff;
+    --text:#0f172a;            /* Deep slate text */
+    --muted:#64748b;           /* Subtle secondary text */
+
+    /* Status colors (UX standard) */
+    --danger:#dc2626;
+    --success:#16a34a;
+    --warning:#d97706;
+
+    /* UI helpers */
+    --border:#e2e8f0;
+    --shadow:0 8px 24px rgba(15,23,42,0.06);
+  }
+
+  html,body{
+    height:100%;
+    margin:0;
+    font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.55;
+  }
+
+  .container{
+    max-width:1000px;
+    margin:28px auto;
+    padding:20px;
+  }
+
+  .card{
+    background:var(--card);
+    border-radius:14px;
+    box-shadow:var(--shadow);
+    padding:20px;
+    margin-bottom:20px;
+    border:1px solid var(--border);
+  }
+
+  header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    margin-bottom:14px;
+  }
+
+  header h1{
+    font-size:1.35rem;
+    margin:0;
+    font-weight:700;
+    color:var(--text);
+  }
+
+  .small{
+    font-size:0.9rem;
+    color:var(--muted);
+  }
+
+  .row{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+
+  .col{
+    flex:1;
+    min-width:220px;
+  }
+
+  label{
+    display:block;
+    margin-bottom:6px;
+    font-weight:600;
+    font-size:0.9rem;
+    color:#1e293b;
+  }
+
+  input[type="text"],
+  textarea,
+  select{
+    width:100%;
+    padding:11px 12px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:#ffffff;
+    font-size:0.95rem;
+    transition:border-color .2s, box-shadow .2s;
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus{
+    outline:none;
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(37,99,235,0.15);
+  }
+
+  button{
+    background:var(--accent);
+    color:#ffffff;
+    border:0;
+    padding:11px 16px;
+    border-radius:12px;
+    font-weight:600;
+    font-size:0.95rem;
+    cursor:pointer;
+    transition:background .2s, transform .05s, box-shadow .05s;
+  }
+
+  button:hover{
+    background:#1d4ed8;
+  }
+
+  button:active{
+    transform:translateY(1px);
+  }
+
+  button.secondary{
+    background:var(--accent-soft);
+    color:var(--accent);
+  }
+
+  button.secondary:hover{
+    background:#dbe7ff;
+  }
+
+  button.ghost{
+    background:transparent;
+    border:1px solid var(--border);
+    color:var(--accent);
+  }
+
+  .muted{
+    color:var(--muted);
+    font-size:0.95rem;
+  }
+
+  .center{text-align:center;}
+
+  /* Question block */
+  .question-box{
+    padding:14px;
+    border-radius:12px;
+    border:1px solid var(--border);
+    background:#f8fafc;
+    margin-bottom:14px;
+  }
+
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-top:10px;
+  }
+
+  .option{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 12px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:#ffffff;
+    cursor:pointer;
+    transition:border .15s, background .15s;
+  }
+
+  .option:hover{
+    border-color:var(--accent);
+    background:#f0f6ff;
+  }
+
+  .badge{
+    display:inline-block;
+    padding:6px 12px;
+    border-radius:999px;
+    background:var(--accent-soft);
+    font-weight:700;
+    color:var(--accent);
+    font-size:0.8rem;
+  }
+
+  footer{
+    font-size:0.85rem;
+    color:var(--muted);
+    text-align:center;
+    padding:14px 0;
+  }
+
+  .controls{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:12px;
+    font-size:0.9rem;
+  }
+
+  th{
+    text-align:left;
+    padding:10px;
+    background:#f1f5f9;
+    color:#334155;
+    font-weight:700;
+  }
+
+  td{
+    padding:10px;
+    border-bottom:1px solid var(--border);
+  }
+
+  .danger{color:var(--danger); font-weight:600;}
+  .success{color:var(--success); font-weight:600;}
+
+  .notice{
+    background:#fff7ed;
+    border-left:4px solid var(--warning);
+    padding:12px;
+    border-radius:8px;
+    margin:14px 0;
+    color:#92400e;
+    font-size:0.9rem;
+  }
+
+  .flex-between{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+  }
+
+  @media (max-width:720px){
+    header{
+      flex-direction:column;
+      align-items:flex-start;
+    }
+    .controls{
+      flex-direction:column;
+      align-items:stretch;
+    }
+  }
+</style>
+
+</head>
+<body>
+<div class="container">
+  <div class="card" id="entryCard">
+    <header>
+      <div>
+        <h1>3-Level MCQ Test. Topic Name: Sundial.</h1>
+        <div class="small">Levels: Easy -> Difficult -> Hard. Attmpt 10 MCQs per level and Score minimum 8 proceed to next level.</div>
+      </div>
+      <div class="btns">
+        <button id="openAdminBtn" class="ghost">Admin Panel</button>
+        <button id="downloadCsvBtn" class="secondary">Download Scores</button>
+      </div>
+    </header>
+
+    <div id="userEntry" class="row">
+      <div class="col">
+        <label for="username">Enter your name</label>
+        <input id="username" type="text" placeholder="Full name" />
+      </div>
+      <div class="col">
+        <label for="selectLevel">Select level to start</label>
+        <select id="selectLevel">
+          <option value="0">Easy</option>
+          <option value="1">Difficult</option>
+          <option value="2">Hard</option>
+        </select>
+      </div>
+      <div style="display:flex;align-items:end;">
+        <button id="startBtn">Start Test</button>
+      </div>
+    </div>
+
+    <div id="summary" style="margin-top:12px;">
+      <div class="muted">Stored scores are saved locally in your browser. Click Download Score option to download all records locally.</div>
+    </div>
+  </div>
+
+  <div class="card" id="testCard" style="display:none;">
+    <div class="flex-between">
+      <div>
+        <div class="small" id="testInfo"></div>
+        <h2 id="questionTitle">Question</h2>
+      </div>
+      <div class="center">
+        <div class="badge" id="progressBadge">0 / 10</div>
+        <div class="small" id="levelBadge">Level</div>
+      </div>
+    </div>
+
+    <div class="question-box" id="questionBox">
+      <div id="questionText" style="font-weight:700"></div>
+      <div class="options" id="optionsContainer"></div>
+    </div>
+
+    <div class="controls">
+      <button id="nextBtn">Next</button>
+      <button id="quitBtn" class="ghost">Quit</button>
+      <div style="flex:1"></div>
+      <div class="muted" id="timerHint"></div>
+    </div>
+  </div>
+
+  <div class="card" id="resultCard" style="display:none;">
+    <h3>Result for <span id="resultName"></span></h3>
+    <div class="small">Level: <strong id="resultLevel"></strong></div>
+    <div style="margin-top:12px;">
+      <div style="font-size:2rem;font-weight:800" id="scoreLarge">0 / 10</div>
+      <div id="resultMessage" class="muted" style="margin-top:8px;"></div>
+    </div>
+    <div style="margin-top:12px;" class="row">
+      <div><button id="retryBtn">Retry Same Level</button></div>
+      <div><button id="nextLevelBtn" class="secondary">Proceed to Next Level</button></div>
+      <div><button id="certBtn" class="ghost">Generate Certificate</button></div>
+      <div style="margin-left:auto"><button id="backHomeBtn" class="ghost">Home</button></div>
+    </div>
+  </div>
+
+  <div class="card" id="adminCard" style="display:none;">
+    <div class="flex-between">
+      <h2>Admin Panel</h2>
+      <div>
+        <button id="exportJsonBtn" class="secondary">Export Q-bank JSON</button>
+        <button id="importJsonBtn" class="ghost">Import Q-bank JSON</button>
+        <button id="closeAdminBtn" class="ghost">Close</button>
+      </div>
+    </div>
+    <div class="notice">Editing here updates the local question bank used for tests (saved to browser storage). This is offline and local to this browser/profile.</div>
+
+    <div style="margin-top:12px;">
+      <label for="levelSelectAdmin">Choose level</label>
+      <select id="levelSelectAdmin">
+        <option value="0">Easy</option>
+        <option value="1">Difficult</option>
+        <option value="2">Hard</option>
+      </select>
+    </div>
+
+    <div style="margin-top:12px;">
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button id="addQBtn">Add Question</button>
+        <button id="saveQBtn" class="secondary">Save Q-bank</button>
+        <button id="resetQBtn" class="ghost">Reset to Defaults</button>
+      </div>
+    </div>
+
+    <div id="questionsList" style="margin-top:12px;"></div>
+  </div>
+
+  <div class="card" id="scoresCard">
+    <div class="flex-between">
+      <h3>Scores (Local)</h3>
+      <div><button id="clearScoresBtn" class="ghost">Clear All</button></div>
+    </div>
+    <div id="scoresTableWrap">
+      <table id="scoresTable">
+        <thead><tr><th>Name</th><th>Level</th><th>Score</th><th>Date</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer class="muted">Scores persist in browser local storage until you clear them.</footer>
+</div>
+
+<!-- Hidden input for JSON import -->
+<input id="fileInput" type="file" accept="application/json" style="display:none" />
+
+<script>
+/*
+  Sundial 3-level MCQ tool (offline) — single-file.
+  Data structures:
+    - questions: array [levelIndex] -> array of question objects {id,q,options:[...],answerIndex}
+    - scores: array of {username,level,score,total, dateIso}
+  Persistence: localStorage keys 'pt_questions' and 'pt_scores'
+*/
+
+const LEVELS = ['Easy','Difficult','Hard'];
+const QUESTIONS_KEY = 'pt_questions';
+const SCORES_KEY = 'pt_scores';
+
+/* ---------- Default question-bank (demo) ---------- */
+/* These are sample Sundial-table related MCQs. Admin can edit them. */
+const DEFAULT_QUESTIONS = [
+  /* Easy */
+  [
+    {id:1, q:"What is the chemical symbol for Hydrogen?", options:["H","He","Hy","Hg"], answer:0},
+    {id:2, q:"Which element has atomic number 6?", options:["C","O","N","Ca"], answer:0},
+    {id:3, q:"Which element is commonly used in light bulb filaments?", options:["Tungsten","Iron","Copper","Helium"], answer:0},
+    {id:4, q:"What is the chemical symbol for gold?", options:["Ag","Au","Gd","Go"], answer:1},
+    {id:5, q:"Which gas is most abundant in Earth's atmosphere?", options:["Oxygen","Nitrogen","Carbon Dioxide","Argon"], answer:1},
+    {id:6, q:"Which element has symbol 'O'?", options:["Osmium","Oxygen","Gold","Lead"], answer:1},
+    {id:7, q:"Which element is a noble gas?", options:["Chlorine","Argon","Sodium","Calcium"], answer:1},
+    {id:8, q:"What is the chemical symbol for Sodium?", options:["Na","S","Sn","Sd"], answer:0},
+    {id:9, q:"Which metal is liquid at room temperature?", options:["Mercury","Iron","Aluminum","Copper"], answer:0},
+    {id:10,q:"Which element forms diatomic molecules O2?", options:["Oxygen","Carbon","Neon","Silicon"], answer:0},
+    {id:11,q:"Which element is used to sterilize water in small quantities (symbol Cl)?", options:["Chlorine","Calcium","Carbon","Cobalt"], answer:0},
+    {id:12,q:"Which element is essential for hemoglobin (symbol Fe)?", options:["Fluorine","Iron","Phosphorus","Boron"], answer:1}
+  ],
+  /* Difficult */
+  [
+    {id:101,q:"Which element has the electron configuration [Ne] 3s2 3p5?", options:["Phosphorus","Chlorine","Sulfur","Argon"], answer:1},
+    {id:102,q:"What is the group number of the noble gases?", options:["18","2","16","12"], answer:0},
+    {id:103,q:"Which element is commonly used as a semiconductor dopant (symbol P)?", options:["Phosphorus","Potassium","Palladium","Platinum"], answer:0},
+    {id:104,q:"Which element has atomic mass ~40 and is used in lightweight alloys (symbol Ca or Ar?)", options:["Calcium (Ca)","Argon (Ar)","Chromium (Cr)","Cobalt (Co)"], answer:0},
+    {id:105,q:"Which of the following is a transition metal?", options:["Titanium","Neon","Oxygen","Nitrogen"], answer:0},
+    {id:106,q:"Which element's isotope is used in carbon dating (symbol C)?", options:["Carbon-14","Carbon-12","Oxygen-18","Hydrogen-2"], answer:0},
+    {id:107,q:"Which series contains the lanthanides?", options:["4f","3d","5d","2p"], answer:0},
+    {id:108,q:"What is the most electronegative element?", options:["Oxygen","Fluorine","Chlorine","Nitrogen"], answer:1},
+    {id:109,q:"Which element is used in nuclear control rods (symbol Cd)", options:["Cadmium","Calcium","Carbon","Cesium"], answer:0},
+    {id:110,q:"Which of these elements is a halogen?", options:["Fluorine","Iron","Helium","Phosphorus"], answer:0},
+    {id:111,q:"Which element can show allotropy (diamond/graphite) with symbol C?", options:["Carbon","Calcium","Cerium","Copper"], answer:0}
+  ],
+  /* Hard */
+  [
+    {id:201,q:"Which of these has the highest first ionization energy?", options:["Sodium","Magnesium","Chlorine","Neon"], answer:3},
+    {id:202,q:"What is the oxidation state of chromium in K2Cr2O7?", options:["+6","+3","+2","+7"], answer:0},
+    {id:203,q:"Which element has d10 configuration in its neutral atom?", options:["Zinc","Titanium","Chromium","Iron"], answer:0},
+    {id:204,q:"Which element is most commonly associated with superconductivity when doped (symbol Y or La?)", options:["Yttrium","Lead","Iron","Copper"], answer:0},
+    {id:205,q:"Which inert gas has the largest atomic radius?", options:["Xenon","Helium","Neon","Argon"], answer:0},
+    {id:206,q:"Which of the following is paramagnetic?", options:["O2 (oxygen)","N2 (nitrogen)","He (helium)","Ne (neon)"], answer:0},
+    {id:207,q:"Which element is produced by radioactive decay of uranium (symbol Pb or Th?)", options:["Lead","Thorium","Bismuth","Polonium"], answer:0},
+    {id:208,q:"Which metal forms an amphoteric oxide Al2O3?", options:["Aluminum","Calcium","Sodium","Potassium"], answer:0},
+    {id:209,q:"Which element has the largest electron affinity?", options:["Chlorine","Fluorine","Bromine","Oxygen"], answer:0},
+    {id:210,q:"Which compound shows ionic bonding predominantly?", options:["NaCl","CO2","CH4","H2O"], answer:0}
+  ]
+];
+
+function saveQuestionsToStorage(qbank){ localStorage.setItem(QUESTIONS_KEY, JSON.stringify(qbank)); }
+function loadQuestionsFromStorage(){
+  const raw = localStorage.getItem(QUESTIONS_KEY);
+  if(raw) try{ return JSON.parse(raw); } catch(e){ console.warn('Corrupt qbank in storage'); }
+  // initialize defaults
+  saveQuestionsToStorage(DEFAULT_QUESTIONS);
+  return JSON.parse(JSON.stringify(DEFAULT_QUESTIONS));
+}
+
+function loadScoresFromStorage(){
+  const raw = localStorage.getItem(SCORES_KEY);
+  if(raw) try{ return JSON.parse(raw); } catch(e){ console.warn('Corrupt scores'); }
+  return [];
+}
+function saveScoresToStorage(scores){ localStorage.setItem(SCORES_KEY, JSON.stringify(scores)); }
+
+/* Utility helpers */
+function shuffleArray(arr){ // Fisher-Yates
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+function sampleQuestions(qs, count){
+  if(qs.length === 0) return [];
+  if(qs.length >= count) {
+    return shuffleArray(qs).slice(0,count);
+  } else {
+    // fallback: sample with replacement (but try to mix)
+    const res=[];
+    const shuffled = shuffleArray(qs);
+    let i=0;
+    while(res.length < count){
+      res.push(Object.assign({}, shuffled[i % shuffled.length]));
+      i++;
+    }
+    return res;
+  }
+}
+function formatDate(iso){ const d=new Date(iso); return d.toLocaleString(); }
+
+/* App state */
+let questionBank = loadQuestionsFromStorage();
+let scores = loadScoresFromStorage();
+
+let currentUser = null;
+let currentLevel = 0;
+let currentQuestions = [];
+let currentIndex = 0;
+let currentScore = 0;
+
+/* DOM refs */
+const entryCard = document.getElementById('entryCard');
+const testCard = document.getElementById('testCard');
+const resultCard = document.getElementById('resultCard');
+const adminCard = document.getElementById('adminCard');
+const scoresCard = document.getElementById('scoresCard');
+
+const usernameInput = document.getElementById('username');
+const selectLevel = document.getElementById('selectLevel');
+const startBtn = document.getElementById('startBtn');
+const openAdminBtn = document.getElementById('openAdminBtn');
+const downloadCsvBtn = document.getElementById('downloadCsvBtn');
+
+const questionText = document.getElementById('questionText');
+const optionsContainer = document.getElementById('optionsContainer');
+const progressBadge = document.getElementById('progressBadge');
+const levelBadge = document.getElementById('levelBadge');
+const nextBtn = document.getElementById('nextBtn');
+const quitBtn = document.getElementById('quitBtn');
+
+const resultName = document.getElementById('resultName');
+const resultLevel = document.getElementById('resultLevel');
+const scoreLarge = document.getElementById('scoreLarge');
+const resultMessage = document.getElementById('resultMessage');
+const retryBtn = document.getElementById('retryBtn');
+const nextLevelBtn = document.getElementById('nextLevelBtn');
+const certBtn = document.getElementById('certBtn');
+const backHomeBtn = document.getElementById('backHomeBtn');
+
+const scoresTableBody = document.querySelector('#scoresTable tbody');
+
+const exportJsonBtn = document.getElementById('exportJsonBtn');
+const importJsonBtn = document.getElementById('importJsonBtn');
+const closeAdminBtn = document.getElementById('closeAdminBtn');
+const openAdminPanelBtn = document.getElementById('openAdminBtn');
+
+const levelSelectAdmin = document.getElementById('levelSelectAdmin');
+const questionsList = document.getElementById('questionsList');
+const addQBtn = document.getElementById('addQBtn');
+const saveQBtn = document.getElementById('saveQBtn');
+const resetQBtn = document.getElementById('resetQBtn');
+const fileInput = document.getElementById('fileInput');
+const clearScoresBtn = document.getElementById('clearScoresBtn');
+
+/* Initialize UI */
+function refreshScoresTable(){
+  scores = loadScoresFromStorage();
+  scoresTableBody.innerHTML = '';
+  if(scores.length === 0){
+    scoresTableBody.innerHTML = '<tr><td colspan="4" class="muted">No scores recorded yet.</td></tr>';
+    return;
+  }
+  scores.slice().reverse().forEach(s=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML = `<td>${escapeHtml(s.username)}</td><td>${LEVELS[s.level] || s.level}</td><td>${s.score}/${s.total}</td><td>${formatDate(s.date)}</td>`;
+    scoresTableBody.appendChild(tr);
+  });
+}
+
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];});
+}
+
+function showCard(card){
+  [entryCard, testCard, resultCard, adminCard].forEach(c => c.style.display = 'none');
+  card.style.display = 'block';
+}
+
+/* ---------- Test flow ---------- */
+startBtn.addEventListener('click', () => {
+  const name = usernameInput.value.trim();
+  if(!name){
+    alert('Please enter your name to start the test.');
+    usernameInput.focus();
+    return;
+  }
+  currentUser = name;
+  currentLevel = parseInt(selectLevel.value,10) || 0;
+  beginTest(currentLevel);
+});
+
+function beginTest(level){
+  questionBank = loadQuestionsFromStorage();
+  currentQuestions = sampleQuestions(questionBank[level] || [], 10);
+  currentIndex = 0;
+  currentScore = 0;
+  renderQuestion();
+  levelBadge.textContent = LEVELS[level];
+  progressBadge.textContent = `${currentIndex}/${currentQuestions.length}`;
+  showCard(testCard);
+}
+
+function renderQuestion(){
+  if(currentIndex >= currentQuestions.length){
+    finishTest();
+    return;
+  }
+  const q = currentQuestions[currentIndex];
+  questionText.textContent = (currentIndex+1) + '. ' + q.q;
+  optionsContainer.innerHTML = '';
+  q.options.forEach((opt,i)=>{
+    const id = `opt_${currentIndex}_${i}`;
+    const div = document.createElement('label');
+    div.className = 'option';
+    div.htmlFor = id;
+    div.innerHTML = `<input type="radio" name="answer" id="${id}" value="${i}" style="transform:scale(1.1)"/> <div style="flex:1">${escapeHtml(opt)}</div>`;
+    optionsContainer.appendChild(div);
+  });
+  progressBadge.textContent = `${currentIndex}/${currentQuestions.length}`;
+}
+
+nextBtn.addEventListener('click', () => {
+  const inputs = document.querySelectorAll('input[name="answer"]');
+  let selected = null;
+  inputs.forEach(inp => { if(inp.checked) selected = parseInt(inp.value,10); });
+  if(selected === null){
+    alert('Please select an answer before continuing.');
+    return;
+  }
+  const correct = currentQuestions[currentIndex].answer;
+  if(selected === correct) currentScore++;
+  currentIndex++;
+  // if last, finishTest will be called by renderQuestion check
+  renderQuestion();
+});
+
+quitBtn.addEventListener('click', () => {
+  if(!confirm('Quit test? Your current attempt will be discarded.')) return;
+  showCard(entryCard);
+});
+
+/* ---------- End of test ---------- */
+function finishTest(){
+  // record score
+  const scoreObj = { username: currentUser, level: currentLevel, score: currentScore, total: currentQuestions.length, date: new Date().toISOString() };
+  scores = loadScoresFromStorage();
+  scores.push(scoreObj);
+  saveScoresToStorage(scores);
+
+  // UI result
+  resultName.textContent = currentUser;
+  resultLevel.textContent = LEVELS[currentLevel];
+  scoreLarge.textContent = `${currentScore} / ${currentQuestions.length}`;
+  // Messages & controls
+  if(currentScore >= 8){
+    resultMessage.innerHTML = `<div>Excellent — you scored ${currentScore}/${currentQuestions.length}. You may proceed to the next level.</div>`;
+    nextLevelBtn.disabled = (currentLevel >= LEVELS.length-1);
+    nextLevelBtn.style.display = 'inline-block';
+    retryBtn.style.display = 'inline-block';
+  } else if(currentScore < 4){
+    resultMessage.innerHTML = `<div class="danger">Score is ${currentScore}/${currentQuestions.length}. We recommend more study before repeating this level.</div>`;
+    nextLevelBtn.style.display = 'none';
+    retryBtn.style.display = 'inline-block';
+  } else {
+    resultMessage.innerHTML = `<div class="muted">Score is ${currentScore}/${currentQuestions.length}. Please review and try this level again to reach 8/10.</div>`;
+    nextLevelBtn.style.display = 'none';
+    retryBtn.style.display = 'inline-block';
+  }
+  refreshScoresTable();
+  showCard(resultCard);
+}
+
+retryBtn.addEventListener('click', () => {
+  beginTest(currentLevel);
+});
+
+nextLevelBtn.addEventListener('click', () => {
+  if(currentScore < 8){
+    alert('You need at least 8 correct answers to proceed.');
+    return;
+  }
+  if(currentLevel >= LEVELS.length-1){
+    alert('You have completed the highest level.');
+    return;
+  }
+  currentLevel++;
+  selectLevel.value = currentLevel;
+  beginTest(currentLevel);
+});
+
+/* Certificate generation: draw on canvas and download PNG */
+certBtn.addEventListener('click', () => {
+  generateCertificateImage(currentUser, LEVELS[currentLevel], currentScore, currentQuestions.length);
+});
+
+backHomeBtn.addEventListener('click', () => {
+  showCard(entryCard);
+});
+
+/* ---------- CSV export (scores) ---------- */
+downloadCsvBtn.addEventListener('click', () => {
+  const sc = loadScoresFromStorage();
+  if(sc.length === 0){ alert('No scores to export.'); return; }
+  const headers = ['username','level','score','total','date'];
+  const rows = sc.map(s => [s.username, LEVELS[s.level]||s.level, s.score, s.total, s.date]);
+  const lines = [headers.join(','), ...rows.map(r => r.map(cell=>`"${String(cell).replace(/"/g,'""')}"`).join(','))].join('\n');
+  const blob = new Blob([lines], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'Sundial_table_scores.csv';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+});
+
+/* ---------- Admin panel ---------- */
+openAdminBtn.addEventListener('click', openAdmin);
+openAdminPanelBtn.addEventListener('click', openAdmin);
+
+function openAdmin(){
+  // simple password gate for casual protection
+  const pw = prompt('Enter admin password to modify questions');
+  if(pw === null) return;
+  if(pw !== 'admin'){
+    alert('Incorrect admin password.');
+    return;
+  }
+  questionBank = loadQuestionsFromStorage();
+  levelSelectAdmin.value = '0';
+  renderAdminQuestions(0);
+  showCard(adminCard);
+}
+
+levelSelectAdmin.addEventListener('change', (e) => {
+  renderAdminQuestions(parseInt(e.target.value,10));
+});
+
+function renderAdminQuestions(level){
+  questionsList.innerHTML = '';
+  questionBank = loadQuestionsFromStorage();
+  const qs = questionBank[level] || [];
+  if(qs.length === 0) questionsList.innerHTML = '<div class="muted">No questions for this level.</div>';
+  qs.forEach((q, idx) => {
+    const box = document.createElement('div');
+    box.className = 'card';
+    box.style.marginBottom='8px';
+    box.innerHTML = `
+      <label>Question ${idx+1}</label>
+      <textarea data-qidx="${idx}" rows="2">${escapeHtml(q.q)}</textarea>
+      <label>Options (one per line)</label>
+      <textarea data-optsidx="${idx}" rows="3">${q.options.map(o=>escapeHtml(o)).join('\\n')}</textarea>
+      <label>Correct option index (0-based)</label>
+      <input data-ansidx="${idx}" type="number" min="0" max="${q.options.length-1}" value="${q.answer}" />
+      <div style="margin-top:8px;display:flex;gap:8px;">
+        <button data-delidx="${idx}" class="ghost">Delete</button>
+      </div>
+    `;
+    questionsList.appendChild(box);
+    // delete handler
+    box.querySelector(`[data-delidx="${idx}"]`).addEventListener('click', () => {
+      if(!confirm('Delete this question?')) return;
+      questionBank[level].splice(idx,1);
+      saveQuestionsToStorage(questionBank);
+      renderAdminQuestions(level);
+    });
+  });
+}
+
+addQBtn.addEventListener('click', () => {
+  const level = parseInt(levelSelectAdmin.value,10);
+  const newQ = { id: Date.now(), q:"New question text", options:["Option 1","Option 2","Option 3","Option 4"], answer:0 };
+  questionBank = loadQuestionsFromStorage();
+  questionBank[level] = questionBank[level] || [];
+  questionBank[level].push(newQ);
+  saveQuestionsToStorage(questionBank);
+  renderAdminQuestions(level);
+});
+
+saveQBtn.addEventListener('click', () => {
+  const level = parseInt(levelSelectAdmin.value,10);
+  const boxes = questionsList.querySelectorAll('.card');
+  const updated = [];
+  boxes.forEach((box, idx) => {
+    const qText = box.querySelector(`textarea[data-qidx="${idx}"]`).value.trim();
+    const optsText = box.querySelector(`textarea[data-optsidx="${idx}"]`).value.split('\\n').map(s=>s.trim()).filter(Boolean);
+    const ansVal = parseInt(box.querySelector(`input[data-ansidx="${idx}"]`).value,10) || 0;
+    updated.push({ id: questionBank[level][idx]?.id || Date.now()+idx, q: qText, options: optsText, answer: Math.max(0,Math.min(ansVal, Math.max(0,optsText.length-1))) });
+  });
+  questionBank[level] = updated;
+  saveQuestionsToStorage(questionBank);
+  alert('Question bank saved locally.');
+  renderAdminQuestions(level);
+});
+
+resetQBtn.addEventListener('click', () => {
+  if(!confirm('Reset the question bank to defaults? This will overwrite local changes.')) return;
+  saveQuestionsToStorage(DEFAULT_QUESTIONS);
+  questionBank = loadQuestionsFromStorage();
+  renderAdminQuestions(parseInt(levelSelectAdmin.value,10));
+});
+
+/* Export/import JSON */
+exportJsonBtn.addEventListener('click', () => {
+  const q = loadQuestionsFromStorage();
+  const blob = new Blob([JSON.stringify(q, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'Sundial_table_qbank.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+});
+
+importJsonBtn.addEventListener('click', () => {
+  fileInput.value = '';
+  fileInput.click();
+});
+
+fileInput.addEventListener('change', (ev) => {
+  const file = ev.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try{
+      const parsed = JSON.parse(e.target.result);
+      if(!Array.isArray(parsed) || parsed.length < 1){
+        alert('Invalid question bank format. Expecting an array of levels.');
+        return;
+      }
+      // basic validation
+      if(!confirm('Importing will overwrite your current local question bank. Proceed?')) return;
+      saveQuestionsToStorage(parsed);
+      questionBank = loadQuestionsFromStorage();
+      renderAdminQuestions(parseInt(levelSelectAdmin.value,10));
+      alert('Imported question bank successfully.');
+    } catch(err){
+      alert('Failed to parse JSON: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+});
+
+closeAdminBtn.addEventListener('click', () => {
+  showCard(entryCard);
+});
+
+/* Clear scores (local) */
+clearScoresBtn.addEventListener('click', () => {
+  if(!confirm('Delete all local scores? This cannot be undone.')) return;
+  localStorage.removeItem(SCORES_KEY);
+  refreshScoresTable();
+});
+
+/* ---------- Certificate image generation ---------- */
+function generateCertificateImage(name, levelLabel, score, total){
+  // Create canvas
+  const width = 1200, height = 800;
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+
+  // background
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0,0,width,height);
+
+  // border
+  ctx.strokeStyle = '#0b5cff';
+  ctx.lineWidth = 12;
+  ctx.strokeRect(30,30,width-60,height-60);
+
+  // Title
+  ctx.fillStyle = '#0b5cff';
+  ctx.font = '48px serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('Certificate of Achievement', width/2, 150);
+
+  // Subtitle
+  ctx.fillStyle = '#111827';
+  ctx.font = '28px sans-serif';
+  ctx.fillText('This certifies that', width/2, 210);
+
+  // Name
+  ctx.font = 'bold 44px sans-serif';
+  ctx.fillText(name, width/2, 270);
+
+  // Achievement
+  ctx.font = '22px sans-serif';
+  ctx.fillText(`has completed the ${levelLabel} level test`, width/2, 320);
+
+  // Score
+  ctx.font = 'bold 36px monospace';
+  ctx.fillStyle = '#111827';
+  ctx.fillText(`Score: ${score} / ${total}`, width/2, 380);
+
+  // Date
+  ctx.font = '18px sans-serif';
+  ctx.fillStyle = '#374151';
+  ctx.fillText(`Date: ${new Date().toLocaleString()}`, width/2, 430);
+
+  // Signature area
+  ctx.font = '20px sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('Instructor / Admin', 900, 700);
+  ctx.beginPath();
+  ctx.moveTo(900,710);
+  ctx.lineTo(1150,710);
+  ctx.strokeStyle = '#374151';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Download link
+  const dataUrl = canvas.toDataURL('image/png');
+  const a = document.createElement('a');
+  a.href = dataUrl;
+  a.download = `certificate_${name.replace(/\\s+/g,'_')}_${levelLabel}.png`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+/* ---------- Startup ---------- */
+(function init(){
+  // load/store defaults into UI
+  questionBank = loadQuestionsFromStorage();
+  refreshScoresTable();
+})();
+</script>
+</body>
+</html>
