@@ -402,8 +402,7 @@ const SCORES_KEY = 'pt_scores';
 /* ---------- Default question-bank (demo) ---------- */
 /* These are sample Sundial-table related MCQs. Admin can edit them. */
 const DEFAULT_QUESTIONS = [
-  /* Easy */
-  [
+[
 {
 "id": 1,
 "q": "Which hemispheres does India lie in?",
@@ -570,8 +569,7 @@ const DEFAULT_QUESTIONS = [
 "answer": 1
 }
 ],
-  /* Difficult */
-  [
+[
 {
 "id": 101,
 "q": "According to the manual, what angle should the gnomon be tilted to for Bengaluru?",
@@ -738,8 +736,7 @@ const DEFAULT_QUESTIONS = [
 "answer": 1
 }
 ],
-  /* Hard */
-  [
+[
 {
 "id": 201,
 "q": "Using the formula tan(H) = sin(θ) / tan(φ), what is the hour-line angle H (approximately) for 3:00 PM local solar time (θ = 45°) at Bengaluru latitude φ = 12.97°?",
@@ -905,7 +902,8 @@ const DEFAULT_QUESTIONS = [
 ],
 "answer": 0
 }
-];
+]
+]
 
 function saveQuestionsToStorage(qbank){ localStorage.setItem(QUESTIONS_KEY, JSON.stringify(qbank)); }
 function loadQuestionsFromStorage(){
@@ -1381,4 +1379,5 @@ function generateCertificateImage(name, levelLabel, score, total){
 </script>
 </body>
 </html>
+
 
