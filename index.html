@@ -388,7 +388,7 @@
 
 <script>
 /*
-  Sundial 3-level MCQ tool (offline) � single-file.
+  Sundial 3-level MCQ tool (offline)  single-file.
   Data structures:
     - questions: array [levelIndex] -> array of question objects {id,q,options:[...],answerIndex}
     - scores: array of {username,level,score,total, dateIso}
@@ -404,46 +404,507 @@ const SCORES_KEY = 'pt_scores';
 const DEFAULT_QUESTIONS = [
   /* Easy */
   [
-    {id:1, q:"What is the chemical symbol for Hydrogen?", options:["H","He","Hy","Hg"], answer:0},
-    {id:2, q:"Which element has atomic number 6?", options:["C","O","N","Ca"], answer:0},
-    {id:3, q:"Which element is commonly used in light bulb filaments?", options:["Tungsten","Iron","Copper","Helium"], answer:0},
-    {id:4, q:"What is the chemical symbol for gold?", options:["Ag","Au","Gd","Go"], answer:1},
-    {id:5, q:"Which gas is most abundant in Earth's atmosphere?", options:["Oxygen","Nitrogen","Carbon Dioxide","Argon"], answer:1},
-    {id:6, q:"Which element has symbol 'O'?", options:["Osmium","Oxygen","Gold","Lead"], answer:1},
-    {id:7, q:"Which element is a noble gas?", options:["Chlorine","Argon","Sodium","Calcium"], answer:1},
-    {id:8, q:"What is the chemical symbol for Sodium?", options:["Na","S","Sn","Sd"], answer:0},
-    {id:9, q:"Which metal is liquid at room temperature?", options:["Mercury","Iron","Aluminum","Copper"], answer:0},
-    {id:10,q:"Which element forms diatomic molecules O2?", options:["Oxygen","Carbon","Neon","Silicon"], answer:0},
-    {id:11,q:"Which element is used to sterilize water in small quantities (symbol Cl)?", options:["Chlorine","Calcium","Carbon","Cobalt"], answer:0},
-    {id:12,q:"Which element is essential for hemoglobin (symbol Fe)?", options:["Fluorine","Iron","Phosphorus","Boron"], answer:1}
-  ],
+{
+"id": 1,
+"q": "Which hemispheres does India lie in?",
+"options": [
+"Northern and Western",
+"Southern and Eastern",
+"Northern and Eastern",
+"Southern and Western"
+],
+"answer": 2
+},
+{
+"id": 2,
+"q": "What is the latitude of Bengaluru used for designing the sundial in the manual?",
+"options": [
+"77.59° N",
+"12.97° N",
+"23.5° N",
+"0°"
+],
+"answer": 1
+},
+{
+"id": 3,
+"q": "What imaginary line divides Earth into Northern and Southern Hemispheres?",
+"options": [
+"Prime Meridian",
+"Tropic of Cancer",
+"Equator",
+"International Date Line"
+],
+"answer": 2
+},
+{
+"id": 4,
+"q": "Which direction must a sundial’s gnomon point to be accurately aligned?",
+"options": [
+"Magnetic North",
+"True North",
+"East",
+"The Zenith"
+],
+"answer": 1
+},
+{
+"id": 5,
+"q": "What is the Tropic of Cancer’s latitude as stated in the manual?",
+"options": [
+"0°",
+"12.97° N",
+"23.5° N",
+"66.5° N"
+],
+"answer": 2
+},
+{
+"id": 6,
+"q": "Which ancient Indian instrument is mentioned in the manual as a gnomon-like tool?",
+"options": [
+"Shanku",
+"Clepsydra",
+"Incense clock",
+"Astrolabe"
+],
+"answer": 0
+},
+{
+"id": 7,
+"q": "According to the manual, 1 Ghadi is equal to how many minutes?",
+"options": [
+"10 minutes",
+"24 minutes",
+"60 minutes",
+"48 minutes"
+],
+"answer": 1
+},
+{
+"id": 8,
+"q": "Which ancient civilisation is cited as using sundials around 1500 BCE?",
+"options": [
+"Maya",
+"Chinese",
+"Egyptian",
+"Sumerian"
+],
+"answer": 2
+},
+{
+"id": 9,
+"q": "What two annual events define the Equinox and Solstice described in the manual?",
+"options": [
+"Lunar phases and eclipses",
+"March/September and June/December",
+"Vernal/Autumnal and Tropical",
+"Perihelion and Aphelion"
+],
+"answer": 1
+},
+{
+"id": 10,
+"q": "Which line of longitude serves as the global reference for time zones?",
+"options": [
+"International Date Line",
+"Prime Meridian",
+"Tropic of Cancer",
+"Greenwich Latitude"
+],
+"answer": 1
+},
+{
+"id": 11,
+"q": "What is the approximate magnetic declination in Bengaluru stated in the manual?",
+"options": [
+"-5.0°",
+"0°",
+"+0.7°",
+"+5.0°"
+],
+"answer": 2
+},
+{
+"id": 12,
+"q": "What is the dial diameter used in the Bengaluru sundial example?",
+"options": [
+"1 foot",
+"2 feet",
+"3 feet",
+"4 feet"
+],
+"answer": 1
+},
+{
+"id": 13,
+"q": "Which traditional Indian observatory complex is referenced for precise sundials?",
+"options": [
+"Konark Sun Temple",
+"Jantar Mantar",
+"Taj Mahal",
+"Nalanda"
+],
+"answer": 1
+},
+{
+"id": 14,
+"q": "Which unit from the manual equals 24 seconds?",
+"options": [
+"Ghadi",
+"Pal",
+"Vipala",
+"Muhurat"
+],
+"answer": 1
+},
+{
+"id": 15,
+"q": "What does the solstice arc represent in sundial calibration?",
+"options": [
+"The Moon’s path",
+"The Sun’s highest and lowest yearly paths",
+"Earth’s orbit eccentricity",
+"Magnetic variation over a year"
+],
+"answer": 1
+}
+],
   /* Difficult */
   [
-    {id:101,q:"Which element has the electron configuration [Ne] 3s2 3p5?", options:["Phosphorus","Chlorine","Sulfur","Argon"], answer:1},
-    {id:102,q:"What is the group number of the noble gases?", options:["18","2","16","12"], answer:0},
-    {id:103,q:"Which element is commonly used as a semiconductor dopant (symbol P)?", options:["Phosphorus","Potassium","Palladium","Platinum"], answer:0},
-    {id:104,q:"Which element has atomic mass ~40 and is used in lightweight alloys (symbol Ca or Ar?)", options:["Calcium (Ca)","Argon (Ar)","Chromium (Cr)","Cobalt (Co)"], answer:0},
-    {id:105,q:"Which of the following is a transition metal?", options:["Titanium","Neon","Oxygen","Nitrogen"], answer:0},
-    {id:106,q:"Which element's isotope is used in carbon dating (symbol C)?", options:["Carbon-14","Carbon-12","Oxygen-18","Hydrogen-2"], answer:0},
-    {id:107,q:"Which series contains the lanthanides?", options:["4f","3d","5d","2p"], answer:0},
-    {id:108,q:"What is the most electronegative element?", options:["Oxygen","Fluorine","Chlorine","Nitrogen"], answer:1},
-    {id:109,q:"Which element is used in nuclear control rods (symbol Cd)", options:["Cadmium","Calcium","Carbon","Cesium"], answer:0},
-    {id:110,q:"Which of these elements is a halogen?", options:["Fluorine","Iron","Helium","Phosphorus"], answer:0},
-    {id:111,q:"Which element can show allotropy (diamond/graphite) with symbol C?", options:["Carbon","Calcium","Cerium","Copper"], answer:0}
-  ],
+{
+"id": 101,
+"q": "According to the manual, what angle should the gnomon be tilted to for Bengaluru?",
+"options": [
+"77.59°",
+"23.5°",
+"12.97°",
+"0° (vertical)"
+],
+"answer": 2
+},
+{
+"id": 102,
+"q": "Using the dial radius of 30.48 cm, the manual gives gnomon height (radius * tan(latitude)) as approximately:",
+"options": [
+"3.05 cm",
+"7.05 cm",
+"30.48 cm",
+"14.1 cm"
+],
+"answer": 1
+},
+{
+"id": 103,
+"q": "If the gnomon is placed at the center (instead of the edge) the manual lists the gnomon height as approximately:",
+"options": [
+"7.05 cm",
+"14.1 cm",
+"30.48 cm",
+"0 cm"
+],
+"answer": 1
+},
+{
+"id": 104,
+"q": "What is the hour-angle increment per hour used in hour-line calculations in the manual?",
+"options": [
+"10° per hour",
+"12° per hour",
+"15° per hour",
+"30° per hour"
+],
+"answer": 2
+},
+{
+"id": 105,
+"q": "Which formula from the manual is used to compute hour-line angles H on the dial?",
+"options": [
+"tan(H) = sin(θ) / tan(φ)",
+"sin(H) = tan(θ) / sin(φ)",
+"H = θ + φ",
+"tan(φ) = sin(H) / tan(θ)"
+],
+"answer": 0
+},
+{
+"id": 106,
+"q": "Why must a compass reading be corrected according to the manual when aligning a sundial in Bengaluru?",
+"options": [
+"Compasses point to True North; no correction needed",
+"Magnetic North differs from True North due to declination",
+"Local time zone changes frequently",
+"Latitude changes daily"
+],
+"answer": 1
+},
+{
+"id": 107,
+"q": "Which manual statement correctly describes the Prime Meridian?",
+"options": [
+"It is 90° East of Greenwich",
+"It is the basis for global time zones and is 0° longitude through Greenwich",
+"It marks the Equator",
+"It is the line dividing day and night"
+],
+"answer": 1
+},
+{
+"id": 108,
+"q": "The manual cites which cultural concept as representing cosmic cycles and time?",
+"options": [
+"Mandala",
+"Kalachakra (Wheel of Time)",
+"Vastu Shastra",
+"Chakra-yantra"
+],
+"answer": 1
+},
+{
+"id": 109,
+"q": "Which of the following is listed as a purpose of Konark Sun Temple in the manual’s STEAM discussion?",
+"options": [
+"Purely religious with no scientific relevance",
+"Demonstrates structural alignment and solar geometry",
+"An astronomical observatory for lunar cartography",
+"A reservoir for water clocks"
+],
+"answer": 1
+},
+{
+"id": 110,
+"q": "Which timing device is described in the manual as regulated by calibrated flow of water?",
+"options": [
+"Incense clock",
+"Water clock (Clepsydra)",
+"Astrolabe",
+"Sundial only"
+],
+"answer": 1
+},
+{
+"id": 111,
+"q": "What correction lines does the manual state may be optionally included on the dial?",
+"options": [
+"Magnetic correction lines",
+"Date correction lines",
+"Longitude correction lines",
+"Latitude correction lines"
+],
+"answer": 1
+},
+{
+"id": 112,
+"q": "Which civilization in the manual is credited with extremely accurate solar calendars?",
+"options": [
+"Roman",
+"Greek",
+"Maya",
+"Chinese"
+],
+"answer": 2
+},
+{
+"id": 113,
+"q": "The manual states GPS satellites require daily corrections for which theory’s effects?",
+"options": [
+"Classical Newtonian mechanics only",
+"Relativistic time dilation effects",
+"Thermodynamics",
+"Quantum mechanics"
+],
+"answer": 1
+},
+{
+"id": 114,
+"q": "Which two views are explicitly described in the manual’s schematic description of the dial?",
+"options": [
+"Top view and side view",
+"Bottom view and top view",
+"Oblique view and inner view",
+"Exploded view and section view"
+],
+"answer": 0
+},
+{
+"id": 115,
+"q": "According to the manual, which astronomical event causes nearly equal day and night worldwide?",
+"options": [
+"Solstice",
+"Equinox",
+"Perihelion",
+"Lunar eclipse"
+],
+"answer": 1
+}
+],
   /* Hard */
   [
-    {id:201,q:"Which of these has the highest first ionization energy?", options:["Sodium","Magnesium","Chlorine","Neon"], answer:3},
-    {id:202,q:"What is the oxidation state of chromium in K2Cr2O7?", options:["+6","+3","+2","+7"], answer:0},
-    {id:203,q:"Which element has d10 configuration in its neutral atom?", options:["Zinc","Titanium","Chromium","Iron"], answer:0},
-    {id:204,q:"Which element is most commonly associated with superconductivity when doped (symbol Y or La?)", options:["Yttrium","Lead","Iron","Copper"], answer:0},
-    {id:205,q:"Which inert gas has the largest atomic radius?", options:["Xenon","Helium","Neon","Argon"], answer:0},
-    {id:206,q:"Which of the following is paramagnetic?", options:["O2 (oxygen)","N2 (nitrogen)","He (helium)","Ne (neon)"], answer:0},
-    {id:207,q:"Which element is produced by radioactive decay of uranium (symbol Pb or Th?)", options:["Lead","Thorium","Bismuth","Polonium"], answer:0},
-    {id:208,q:"Which metal forms an amphoteric oxide Al2O3?", options:["Aluminum","Calcium","Sodium","Potassium"], answer:0},
-    {id:209,q:"Which element has the largest electron affinity?", options:["Chlorine","Fluorine","Bromine","Oxygen"], answer:0},
-    {id:210,q:"Which compound shows ionic bonding predominantly?", options:["NaCl","CO2","CH4","H2O"], answer:0}
-  ]
+{
+"id": 201,
+"q": "Using the formula tan(H) = sin(θ) / tan(φ), what is the hour-line angle H (approximately) for 3:00 PM local solar time (θ = 45°) at Bengaluru latitude φ = 12.97°?",
+"options": [
+"≈ 36°",
+"≈ 48°",
+"≈ 72°",
+"≈ 90°"
+],
+"answer": 2
+},
+{
+"id": 202,
+"q": "Which trigonometric component in the hour-line formula represents the hour angle measured from local solar noon?",
+"options": [
+"φ (latitude)",
+"H (hour-line angle)",
+"θ (hour angle)",
+"tan(H)"
+],
+"answer": 2
+},
+{
+"id": 203,
+"q": "Given the manual’s hour-line formula, if latitude φ increases (closer to pole), how does tan(φ) change and what is the qualitative effect on tan(H) for a fixed θ?",
+"options": [
+"tan(φ) decreases → tan(H) increases",
+"tan(φ) increases → tan(H) decreases",
+"tan(φ) unchanged → tan(H) unchanged",
+"tan(φ) increases → tan(H) increases"
+],
+"answer": 1
+},
+{
+"id": 204,
+"q": "If a compass at Bengaluru indicates Magnetic North, by how many degrees (and in which sign) should you correct to obtain True North per the manual?",
+"options": [
+"Subtract 0.7° (−0.7°)",
+"Add 0.7° (+0.7°)",
+"Subtract 7° (−7°)",
+"No correction needed"
+],
+"answer": 1
+},
+{
+"id": 205,
+"q": "Using the manual’s numeric example, what is the approximate gnomon height when the gnomon is placed at the dial edge (radius = 30.48 cm)?",
+"options": [
+"≈ 3.02 cm",
+"≈ 7.05 cm",
+"≈ 14.1 cm",
+"≈ 30.48 cm"
+],
+"answer": 1
+},
+{
+"id": 206,
+"q": "Which of the following best explains why Konark Sun Temple is relevant to STEAM according to the manual?",
+"options": [
+"It is only a religious monument without technical significance",
+"It integrates solar geometry, engineering alignment, mathematical symmetry, and artistic expression",
+"It demonstrates modern electronics",
+"It was originally a water clock facility"
+],
+"answer": 1
+},
+{
+"id": 207,
+"q": "The manual gives Bengaluru longitude as 77.59° E. Which practical sundial parameter is directly affected by longitude?",
+"options": [
+"Gnomon tilt (latitude)",
+"Local solar time offset from standard time",
+"Tropic position",
+"Magnetic declination"
+],
+"answer": 1
+},
+{
+"id": 208,
+"q": "Which among the following is NOT a timekeeping device mentioned in the manual?",
+"options": [
+"Water clocks",
+"Incense clocks",
+"Atomic clocks",
+"Moon clocks"
+],
+"answer": 2
+},
+{
+"id": 209,
+"q": "The manual attributes sundial alignment to which astronomical reference?",
+"options": [
+"Polaris / North Star direction",
+"Sunrise azimuth on equinox only",
+"Magnetic field lines",
+"Moon's position"
+],
+"answer": 0
+},
+{
+"id": 210,
+"q": "Which ancient Indian site cited in the manual achieved sundial accuracy to about 2 seconds?",
+"options": [
+"Konark Sun Temple",
+"Nalanda University",
+"Jantar Mantar observatories",
+"Ajanta Caves"
+],
+"answer": 2
+},
+{
+"id": 211,
+"q": "In the manual, the phrase 'date correction lines' on the dial most directly helps to compensate for which effect?",
+"options": [
+"Magnetic declination changes",
+"Equation of time / seasonal solar declination changes",
+"Longitude changes",
+"Latitude drift"
+],
+"answer": 1
+},
+{
+"id": 212,
+"q": "Which mathematical operation is central to converting the hour angle θ and latitude φ into the hour-line H in the manual’s formula?",
+"options": [
+"Logarithm",
+"Arctangent (inverse tangent)",
+"Exponential",
+"Square root"
+],
+"answer": 1
+},
+{
+"id": 213,
+"q": "The manual references Kalachakra (Wheel of Time). Which domain does this concept primarily link with, per the manual?",
+"options": [
+"Purely religious rites",
+"Agriculture techniques only",
+"Integration of cosmic cycles, planetary motion, and calendars",
+"Naval navigation"
+],
+"answer": 2
+},
+{
+"id": 214,
+"q": "Which numeric value in the manual is presented as Bengaluru’s longitude?",
+"options": [
+"12.97° E",
+"23.5° E",
+"77.59° E",
+"0°"
+],
+"answer": 2
+},
+{
+"id": 215,
+"q": "According to the manual, which two projected views are essential for a full schematic sundial description?",
+"options": [
+"Plan (top) view showing hour markings and a side view showing gnomon tilt",
+"Only an elevation view suffices",
+"A section view of magnetic field",
+"Isometric view and bottom view"
+],
+"answer": 0
+}
 ];
 
 function saveQuestionsToStorage(qbank){ localStorage.setItem(QUESTIONS_KEY, JSON.stringify(qbank)); }
@@ -641,7 +1102,7 @@ function finishTest(){
   scoreLarge.textContent = `${currentScore} / ${currentQuestions.length}`;
   // Messages & controls
   if(currentScore >= 8){
-    resultMessage.innerHTML = `<div>Excellent � you scored ${currentScore}/${currentQuestions.length}. You may proceed to the next level.</div>`;
+    resultMessage.innerHTML = `<div>Excellent  you scored ${currentScore}/${currentQuestions.length}. You may proceed to the next level.</div>`;
     nextLevelBtn.disabled = (currentLevel >= LEVELS.length-1);
     nextLevelBtn.style.display = 'inline-block';
     retryBtn.style.display = 'inline-block';
@@ -920,3 +1381,4 @@ function generateCertificateImage(name, levelLabel, score, total){
 </script>
 </body>
 </html>
+
